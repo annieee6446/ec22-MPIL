@@ -24,6 +24,11 @@ class detection:
         self.ls_pil_orig_n, self.ls_label_orig_n = self.PIL_dataframe(self.PIL_series_orig_n)
         return self.ls_pil_orig_n, self.ls_label_orig_n
 
+    def check_header(self, magmap_header):
+        for i in range(len(self.ls_files_n)):
+            if magmap_header.fits_header['DATE-OBS'] == self.ls_files_n[i].fits_header['DATE-OBS']:
+                return i
+
     def PIL_series(self, TS_list, ls_map, pos_g_val=100, neg_g_val=-100):
         new_TS_list = []
         pil_series_not_thin = []
