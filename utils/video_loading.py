@@ -1,8 +1,5 @@
-<<<<<<< HEAD:utils/video_loader.py
 import os
 import cv2
-=======
->>>>>>> 0cc3d0f1930c05bf2d5399fef6e3bc062d92a96d:utils/video_loading.py
 import glob
 import sunpy.map
 import numpy as np
@@ -14,10 +11,6 @@ from IPython.display import Video
 import warnings
 warnings.filterwarnings('ignore')
 
-<<<<<<< HEAD:utils/video_loader.py
-=======
-
->>>>>>> 0cc3d0f1930c05bf2d5399fef6e3bc062d92a96d:utils/video_loading.py
 class video_loader:
     def __init__(self):
             pass
