@@ -22,11 +22,19 @@ class video_loader:
         def mask_img(img):
             return np.ma.masked_where(img.astype(float) == 0, img.astype(float))
       
+<<<<<<< HEAD
         def apply_params(background, pil, ropi, date):
+=======
+        def apply_params(background, pil, ropi, chpil, date):
+>>>>>>> 5df8d335740460f595f8b766744a91e679014340
             hmi_magmap = sunpy.map.Map(background)
     
             ropi_mask = mask_img(plt.imread(ropi))
             pil_mask = mask_img(plt.imread(pil))
+<<<<<<< HEAD
+=======
+            chpil_mask =  mask_img(plt.imread(chpil))
+>>>>>>> 5df8d335740460f595f8b766744a91e679014340
             
             cmap = plt.cm.spring
             cmap = cmap.set_bad(color='white')
@@ -40,12 +48,22 @@ class video_loader:
             
             plt.xlabel('Carrington Longitude [deg]',fontsize = 16)
             plt.ylabel('Latitude [deg]',fontsize = 16)
+<<<<<<< HEAD
             plt.imshow(ropi_mask, 'cool', interpolation='none', alpha=0.6)
             plt.imshow(pil_mask, cmap, interpolation='none', alpha=1)
             
             cb.set_label("LOS Magnetic Field [Gauss]")
             file_path = os.path.join(results_path, '/' + date + '.png')
             plt.ioff()
+=======
+            plt.imshow(chpil_mask, 'bone', interpolation='none', alpha=1)
+            plt.imshow(ropi_mask, 'cool', interpolation='none', alpha=0.4)
+            plt.imshow(pil_mask, 'spring', interpolation='none', alpha=1)
+            
+            cb.set_label("LOS Magnetic Field [Gauss]")
+            file_path = os.path.join(results_path, date + '.png')
+            plt.close(fig)
+>>>>>>> 5df8d335740460f595f8b766744a91e679014340
             plt.savefig(file_path)
         
         for bg in backgrounds:
@@ -57,11 +75,20 @@ class video_loader:
                 
                 if(b_date == pil_date): 
                     ropi = glob.glob(path + "/*" + date + "*RoPI*.png")
+<<<<<<< HEAD
                     apply_params(bg, pil, ropi[0], date)
                     
     def display_video(self, path):
         img_array = []
         file_name = 'mag.mp4'
+=======
+                    chpil = glob.glob(path + "/*" + date + "*CHPIL*.png")
+                    apply_params(bg, pil, ropi[0], chpil[0], date)
+                    
+    def display_video(self, path):
+        img_array = []
+        file_name = path + '/video/mag.mp4'
+>>>>>>> 5df8d335740460f595f8b766744a91e679014340
         size = (None, None)
         for filename in sorted(glob.glob(path + '/*.png')): 
             img = cv2.imread(filename)
