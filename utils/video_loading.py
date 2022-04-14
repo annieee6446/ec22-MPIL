@@ -56,7 +56,6 @@ class video_loader:
             
             cb.set_label("LOS Magnetic Field [Gauss]")
             file_path = os.path.join(results_path, date + '.png')
-            plt.ioff()
             plt.savefig(file_path)
         
         for bg in backgrounds:
