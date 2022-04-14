@@ -1,35 +1,15 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
+import os
+import cv2
 import glob
-import joblib
-import pandas as pd
+import sunpy.map
 import numpy as np
 from itertools import islice
-
-import sunpy.map
-from sunpy.coordinates import frames
-from sunpy.map.mapbase import GenericMap
-from sunpy.map.sources import MDIMap
-from sunpy.util.metadata import MetaDict
-
 import matplotlib.pyplot as plt
-
-import cv2
-import os
-from PIL import Image
 
 from IPython.display import Video
 
 import warnings
 warnings.filterwarnings('ignore')
-
-
-# In[5]:
-
 
 class video_loader:
     def __init__(self):
