@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../utils')
-from ts_processing import ts_processing
-from region_detection import pos_neg_detection
+from utils.ts_processing import ts_processing
+from utils.region_detection import pos_neg_detection
 
 import os
 import numpy as np
