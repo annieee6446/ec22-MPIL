@@ -1,8 +1,9 @@
 import sys
 sys.path.append('../utils')
-from utils.ts_processing import ts_processing
-from utils.region_detection import pos_neg_detection
+from ts_processing import ts_processing
+from region_detection import pos_neg_detection
 
+import os
 import numpy as np
 import pandas as pd
 from skimage import feature
@@ -362,3 +363,18 @@ class detection:
         for i in range(len(self.mag_map_list)):
             if magmap.fits_header['DATE-OBS'] == self.mag_map_list[i].fits_header['DATE-OBS']:
                 return i
+
+    def check_outpath(self, outpath):
+        """
+        This method checks for whether the output path exists
+
+        :param outpath: Output path
+        """
+        if not os.path.isdir(outpath+str(self.ar_no)):
+            ar_outpath = os.path.join(outpath,str(self.ar_no))
+            ar_outpath_video = os.path.join(outpath,str(self.ar_no)+'_video')
+            os.makedirs(ar_outpath)
+            os.makedirs(ar_outpath_video)
+            print("Path does not exist, create: ")
+            print(ar_outpath)
+            print(ar_outpath_video)
