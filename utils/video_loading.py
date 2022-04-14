@@ -62,6 +62,7 @@ class video_loader:
     def display_video(self, path):
         img_array = []
         file_name = 'mag.mp4'
+        size = (None, None)
         for filename in sorted(glob.glob(path + '/*.png')): 
             img = cv2.imread(filename)
             height, width, layers = img.shape
