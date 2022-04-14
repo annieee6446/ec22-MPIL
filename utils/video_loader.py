@@ -35,10 +35,10 @@ class video_loader:
     def __init__(self):
             pass
         
-    def build_images(self, b_path, f_path):
-        backgrounds = glob.glob(b_path + "/*magnetogram*.fits") 
-        foregrounds_pil = glob.glob(f_path + "/*_PIL*.png")
-        foregrounds_ropi = glob.glob(f_path + "/*RoPI*.png")
+    def build_images(self, bg_path, fg_path, results_path):
+        backgrounds = orderedglob.glob(bg_path + "/*magnetogram*.fits") 
+        foregrounds_pil = glob.glob(fg_path + "/*_PIL*.png")
+        foregrounds_ropi = glob.glob(fg_path + "/*RoPI*.png")
         
         def mask_img(img):
             return np.ma.masked_where(img.astype(float) == 0, img.astype(float))
@@ -51,33 +51,37 @@ class video_loader:
             
             cmap = plt.cm.spring
             cmap = cmap.set_bad(color='white')
-
-            fig = plt.figure(figsize=(10,8))
-            hmi_magmap.plot()
-            plt.xlabel('Carrington Longitude [deg]', fontsize = 16)
-            plt.ylabel('Latitude [deg]', fontsize = 16)
-            plt.imshow(ropi_mask, 'cool', interpolation='none', alpha=0.2)
-            plt.imshow(pil_mask, cmap, interpolation='none', alpha=1)
             
-            file_path = os.path.join("/home/nkhasayeva1/Results", date + '.png')
+            fig = plt.figure(figsize=(10,8))
+            
+            hmi_magmap.plot_settings['cmap'] = 'hmimag'
+            hmi_magmap.plot_settings['norm'] = plt.Normalize(-1500, 1500)
+            im_hmi = hmi_magmap.plot()
+            cb = plt.colorbar(im_hmi, fraction=0.019, pad=0.1)
+            
+            plt.xlabel('Carrington Longitude [deg]',fontsize = 16)
+            plt.ylabel('Latitude [deg]',fontsize = 16)
+            plt.imshow(mask, cmap, interpolation='none', alpha=1)
+            plt.imshow(mask1, 'cool', interpolation='none', alpha=0.6)
+            
+            cb.set_label("LOS Magnetic Field [Gauss]")
+            
+            file_path = os.path.join(results_path, date + '.png')
             plt.savefig(file_path)
         
         for bg in backgrounds:
             b_date = bg.split('_TAI')[0].split('.', 3)[-1].replace('_', '')
-            print(b_date)
             for pil in foregrounds_pil:
                 date = pil.split('_BLOS')[0].split('_', 2)[-1]
                 pil_date = date.replace('-','').replace(':','')
-                print(pil_date)
                 if(b_date == pil_date): 
-                    print('hi')
-                    ropi = glob.glob(f_path + "/*" + date + "*RoPI*.png")
+                    ropi = glob.glob(fg_path + "/*" + date + "*RoPI*.png")
                     apply_params(bg, pil, ropi[0], date)
                     
     def display_video(self, path):
         img_array = []
         file_name = 'mag.mp4'
-        for filename in glob.glob(path + '*.png'): 
+        for filename in sorted(glob.glob(path + '*.png')): 
             img = cv2.imread(filename)
             height, width, layers = img.shape
             size = (width, height)
@@ -90,4 +94,3 @@ class video_loader:
             out.release()
         
         Video(file_name, embed=True)
-
