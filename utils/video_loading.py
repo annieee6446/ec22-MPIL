@@ -44,7 +44,7 @@ class video_loader:
             plt.imshow(pil_mask, cmap, interpolation='none', alpha=1)
             
             cb.set_label("LOS Magnetic Field [Gauss]")
-            file_path = os.path.join(results_path, date + '.png')
+            file_path = os.path.join(results_path, '/' + date + '.png')
             plt.ioff()
             plt.savefig(file_path)
         
