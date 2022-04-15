@@ -12,20 +12,50 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class video_loader:
+    """
+    This class is responsible for a generation of a video of magnetogram images overlaid with Polarity Inversion Line, Region of Polarity Inversion, and Convex Hull masks. 
+    """
     def __init__(self):
         """
         A constructor that initializes the class variables.
         """
         pass
     
-    def build_images(self, path, results_path):
+    def build_images(self, path, outpath):
+         """
+        Build and save overlaid magnetogram image outputs.
+        
+        :param path: Initialize path to samples
+        
+        :param outpath: Initialize path for outputs
+        """
         backgrounds = sorted(glob.glob(path + "/*magnetogram*.fits"))
         foregrounds_pil = sorted(glob.glob(path + "/*_PIL*.png"))
         
         def mask_img(img):
+            """
+            Create masked images.
+       
+            :param img: Array of image values
+       
+            :return: Masked image values
+            """
             return np.ma.masked_where(img.astype(float) == 0, img.astype(float))
       
         def apply_params(background, pil, ropi, chpil, date):
+            """
+            Overlay Polarity Inversion Line, Region of Polarity Inversion, and Convex  Hull masks over magnetogram images.
+        
+            :param background: Initialize background image
+       
+            :param pil: Initialize PIL image
+            
+            :param ropi: Initialize RoPI image
+            
+            :param chpil: Initialize Convex Hull image
+            
+            :param date: Initialize dat 
+            """
             hmi_magmap = sunpy.map.Map(background)
      
             ropi_mask = mask_img(plt.imread(ropi))
@@ -49,7 +79,7 @@ class video_loader:
             plt.imshow(pil_mask, cmap, interpolation='none', alpha=1)
             
             cb.set_label("LOS Magnetic Field [Gauss]")
-            file_path = os.path.join(results_path, date + '.png')
+            file_path = os.path.join(outpath, date + '.png')
             plt.savefig(file_path)
         
         for bg in backgrounds:
@@ -66,6 +96,13 @@ class video_loader:
                     
                         
     def display_video(self, path):
+        """
+        Create and save the video out of the images in the given path.
+        
+        :param path: Initialize path to samples
+        
+        :return: Video slide of magnetogram images
+        """
         img_array = []
         file_name = path + '_video/mag.mp4'
         size = (None, None)
