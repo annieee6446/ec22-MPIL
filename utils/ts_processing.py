@@ -82,6 +82,8 @@ class ts_processing:
             TS_list.append(self.get_TS(f))
             map_list.append(smp.Map(f))
 
+        os.chdir('../..')
+
         return TS_list, map_list
 
     def great_circle_distance(self, x, y):
