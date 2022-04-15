@@ -22,32 +22,32 @@ class video_loader:
         pass
     
     def build_images(self, path, outpath):
-         """
+        """
         Build and save overlaid magnetogram image outputs.
-        
+       
         :param path: Initialize path to samples
-        
+       
         :param outpath: Initialize path for outputs
         """
         backgrounds = sorted(glob.glob(path + "/*magnetogram*.fits"))
         foregrounds_pil = sorted(glob.glob(path + "/*_PIL*.png"))
-        
+       
         def mask_img(img):
             """
             Create masked images.
-       
+        
             :param img: Array of image values
-       
+        
             :return: Masked image values
             """
             return np.ma.masked_where(img.astype(float) == 0, img.astype(float))
-      
+        
         def apply_params(background, pil, ropi, chpil, date):
             """
             Overlay Polarity Inversion Line, Region of Polarity Inversion, and Convex  Hull masks over magnetogram images.
         
             :param background: Initialize background image
-       
+        
             :param pil: Initialize PIL image
             
             :param ropi: Initialize RoPI image
@@ -57,7 +57,7 @@ class video_loader:
             :param date: Initialize dat 
             """
             hmi_magmap = sunpy.map.Map(background)
-     
+        
             ropi_mask = mask_img(plt.imread(ropi))
             pil_mask = mask_img(plt.imread(pil))
             chpil_mask =  mask_img(plt.imread(chpil))
@@ -83,12 +83,10 @@ class video_loader:
             plt.savefig(file_path)
         
         for bg in backgrounds:
-            b_date = bg.split('_TAI')[0].rsplit('.')[-1].replace('_', '')
-
+            b_date = bg.split('_TAI')[0].rsplit('.')[-1].replace('_', '')      
             for pil in foregrounds_pil:
                 date = pil.split('_BLOS')[0].split('_', 2)[-1]
-                pil_date = date.replace('-','').replace(':','').replace('_','')
-
+                pil_date = date.replace('-','').replace(':','').replace('_','')      
                 if(b_date == pil_date): 
                     ropi = glob.glob(path + "/*" + date + "*RoPI*.png")
                     chpil = glob.glob(path + "/*" + date + "*CHPIL*.png")
